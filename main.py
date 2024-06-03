@@ -1,8 +1,11 @@
 from robocorp import windows
+import time
 
-def login_tokko(id, password):
+def open():
     desktop = windows.desktop()
     desktop.windows_run("C:\Program Files (x86)\TokkoTencho\特攻店長\特攻店長.exe")
+
+def login(id, password):
     tokko_login = windows.find_window('subname:"特攻店長 - ログイン"')
     tokko_login.find("id:txtUserID").set_value(id)
     tokko_login.find("id:txtPassword").set_value(password, validator = None)
@@ -31,3 +34,14 @@ def select_menu(menu):
         "外部在庫関連付け":"id:pbOutsideWarehouseStock"
     }
     tokko_main.find(menu_dict[menu]).click()
+
+def wait(max_time=60):
+    #特攻店長 - 進行状況
+    for i in range(max_time):
+        try:
+            windows.find_window('subname:"特攻店長 - 進行状況"', wait_time=1, timeout=1)
+        except:
+            break
+
+def close_tokko():
+    pass
